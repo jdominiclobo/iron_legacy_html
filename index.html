@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<!--
+  IRON LEGACY — landing page
+  Design tokens
+  Color   iron-black #181411, charcoal #241F1A, ember #D9642B, copper #B8763F, parchment #ECE3D0, ash #8A8076
+  Type    Display: Fraunces (soft, heritage, heavy weights) · Body: IBM Plex Sans (clean, slightly technical) · Label: Oswald (condensed, stamped-metal caps)
+  Motif   The maker's foundry stamp (the mark cast into the bottom of every real iron pan) is the signature element —
+          it is the logo, the hero illustration, the price tags, the quote plaques, and the footer mark.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iron Legacy — Cast Iron Cookware, Forged to Outlast You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=IBM+Plex+Sans:wght@400;500;600&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ---------------------------- tokens ---------------------------- */
+:root{
+  --iron-black:#181411;
+  --charcoal:#241F1A;
+  --charcoal-2:#2C2620;
+  --ember:#D9642B;
+  --ember-bright:#F0793A;
+  --copper:#B8763F;
+  --parchment:#ECE3D0;
+  --ash:#9A8F82;
+  --line:rgba(236,227,208,0.12);
+
+  --font-display:'Fraunces', serif;
+  --font-body:'IBM Plex Sans', sans-serif;
+  --font-label:'Oswald', sans-serif;
+
+  --container:1180px;
+  --ease:cubic-bezier(.22,.9,.3,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--iron-black);
+  color:var(--parchment);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+ul{list-style:none;}
+
+.wrap{max-width:var(--container);margin:0 auto;padding:0 32px;}
+
+.eyebrow{
+  font-family:var(--font-label);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--ember-bright);
+}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;letter-spacing:-0.01em;}
+.section{padding:120px 0;position:relative;}
+.section-head{max-width:640px;margin-bottom:64px;}
+.section-head h2{font-size:clamp(32px,4vw,46px);margin-top:14px;line-height:1.15;}
+.section-head p{margin-top:18px;color:var(--ash);font-size:17px;max-width:520px;}
+
+/* ---------------------------- reveal-on-scroll ---------------------------- */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease), transform .8s var(--ease);}
+.reveal.is-visible{opacity:1;transform:translateY(0);}
+.reveal-stagger > *{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease), transform .7s var(--ease);}
+.reveal-stagger.is-visible > *{opacity:1;transform:translateY(0);}
+.reveal-stagger.is-visible > *:nth-child(1){transition-delay:.05s;}
+.reveal-stagger.is-visible > *:nth-child(2){transition-delay:.15s;}
+.reveal-stagger.is-visible > *:nth-child(3){transition-delay:.25s;}
+.reveal-stagger.is-visible > *:nth-child(4){transition-delay:.35s;}
+
+/* ---------------------------- nav ---------------------------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 32px;
+  background:linear-gradient(to bottom, rgba(24,20,17,0.92), rgba(24,20,17,0));
+  backdrop-filter:blur(2px);
+  opacity:0;transform:translateY(-12px);
+  animation:navIn .7s var(--ease) .15s forwards;
+}
+@keyframes navIn{to{opacity:1;transform:translateY(0);}}
+.nav__brand{display:flex;align-items:center;gap:12px;}
+.nav__brand svg{width:38px;height:38px;}
+.nav__wordmark{font-family:var(--font-label);font-size:15px;font-weight:600;letter-spacing:0.18em;}
+.nav__links{display:flex;gap:36px;font-family:var(--font-label);font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500;color:var(--ash);}
+.nav__links a{transition:color .25s;}
+.nav__links a:hover{color:var(--parchment);}
+.nav__right{display:flex;align-items:center;gap:18px;}
+.nav__cta{
+  font-family:var(--font-label);font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--ember);color:var(--iron-black);padding:11px 22px;border-radius:3px;
+  transition:background .25s,transform .25s;
+}
+.nav__cta:hover{background:var(--ember-bright);transform:translateY(-1px);}
+.nav__burger{display:none;width:30px;height:22px;position:relative;flex-direction:column;justify-content:space-between;}
+.nav__burger span{display:block;height:2px;background:var(--parchment);border-radius:2px;}
+
+@media(max-width:880px){
+  .nav__links{display:none;}
+  .nav__burger{display:flex;}
+}
+
+/* ---------------------------- hero ---------------------------- */
+.hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding-top:120px;padding-bottom:80px;
+  position:relative;
+}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 0.95fr;gap:40px;align-items:center;}
+.hero__copy h1{
+  font-size:clamp(40px,6vw,68px);
+  line-height:1.05;
+  margin-top:18px;
+}
+.hero__copy h1 span{display:block;}
+.hero__copy h1 .accent{color:var(--ember-bright);font-style:italic;font-weight:600;}
+.hero__copy p{margin-top:24px;font-size:18px;color:var(--ash);max-width:460px;}
+.hero__line, .hero__copy h1 span, .hero__copy p, .hero__actions, .hero__trust{
+  opacity:0;transform:translateY(20px);
+  animation:riseIn .8s var(--ease) forwards;
+}
+.hero__line{animation-delay:.25s;}
+.hero__copy h1 span:nth-of-type(1){animation-delay:.4s;}
+.hero__copy h1 span:nth-of-type(2){animation-delay:.55s;}
+.hero__copy p{animation-delay:.7s;}
+.hero__actions{animation-delay:.85s;}
+.hero__trust{animation-delay:1s;}
+@keyframes riseIn{to{opacity:1;transform:translateY(0);}}
+
+.hero__actions{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;}
+.btn{
+  font-family:var(--font-label);font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  padding:16px 30px;border-radius:3px;display:inline-flex;align-items:center;gap:8px;
+  transition:background .25s, color .25s, transform .25s, border-color .25s;
+}
+.btn--primary{background:var(--ember);color:var(--iron-black);}
+.btn--primary:hover{background:var(--ember-bright);transform:translateY(-2px);}
+.btn--ghost{border:1px solid var(--line);color:var(--parchment);}
+.btn--ghost:hover{border-color:var(--copper);color:var(--ember-bright);transform:translateY(-2px);}
+
+.hero__trust{
+  margin-top:30px;font-family:var(--font-label);font-size:12.5px;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--ash);display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+}
+.hero__trust span:not(:last-child)::after{content:'·';margin-left:10px;color:var(--copper);}
+
+.hero__visual{position:relative;display:flex;align-items:center;justify-content:center;height:480px;}
+.hero__rings{position:absolute;width:480px;height:480px;}
+.ring{
+  position:absolute;border-radius:50%;border:1px solid var(--ember);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  opacity:0;
+}
+.ring--1{width:220px;height:220px;}
+.ring--2{width:320px;height:320px;}
+.ring--3{width:420px;height:420px;}
+@media(prefers-reduced-motion:no-preference){
+  .ring{animation:pulse 4.5s ease-out infinite;}
+  .ring--2{animation-delay:1.1s;}
+  .ring--3{animation-delay:2.2s;}
+}
+@keyframes pulse{
+  0%{transform:translate(-50%,-50%) scale(0.78);opacity:0;}
+  15%{opacity:0.55;}
+  100%{transform:translate(-50%,-50%) scale(1.06);opacity:0;}
+}
+
+.hero__pan{position:relative;width:300px;height:300px;}
+.hero__pan svg{width:100%;height:100%;
+  opacity:0;transform:scale(1.35) rotate(-9deg);
+  animation:stampPress 1s var(--ease) .5s forwards;
+}
+@keyframes stampPress{
+  0%{opacity:0;transform:scale(1.35) rotate(-9deg);}
+  65%{opacity:1;transform:scale(0.96) rotate(2deg);}
+  100%{opacity:1;transform:scale(1) rotate(0deg);}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero__pan svg, .hero__copy *, .nav, .ring{animation:none !important;opacity:1 !important;transform:none !important;}
+}
+
+/* ---------------------------- craft / timeline ---------------------------- */
+.craft{background:var(--charcoal);}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.timeline::before{
+  content:'';position:absolute;top:13px;left:0;right:0;height:1px;background:var(--line);
+}
+.timeline__rail{
+  position:absolute;top:13px;left:0;height:1px;background:var(--ember);width:0%;
+  transition:width 1.6s var(--ease);
+}
+.timeline.is-visible .timeline__rail{width:100%;}
+.tl-step{position:relative;padding-top:46px;padding-right:24px;}
+.tl-step__dot{
+  position:absolute;top:6px;left:0;width:15px;height:15px;border-radius:50%;
+  background:var(--charcoal);border:2px solid var(--copper);
+}
+.tl-step.is-visible .tl-step__dot{background:var(--ember);border-color:var(--ember);transition:background .4s, border-color .4s;}
+.tl-step__num{font-family:var(--font-label);font-size:13px;color:var(--copper);letter-spacing:0.1em;}
+.tl-step h3{font-family:var(--font-label);font-size:18px;letter-spacing:0.05em;text-transform:uppercase;margin-top:10px;font-weight:600;}
+.tl-step p{margin-top:10px;color:var(--ash);font-size:15px;}
+
+@media(max-width:880px){
+  .timeline{grid-template-columns:1fr;gap:36px;}
+  .timeline::before{display:none;}
+  .timeline__rail{display:none;}
+  .tl-step{padding-left:30px;padding-top:0;border-left:1px solid var(--line);padding-bottom:4px;}
+  .tl-step__dot{top:0;left:-7px;}
+}
+
+/* ---------------------------- collection ---------------------------- */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.card{
+  background:var(--charcoal);border:1px solid var(--line);border-radius:6px;
+  padding:28px 24px 26px;position:relative;overflow:hidden;
+  transition:transform .4s var(--ease), border-color .4s;
+}
+.card:hover{transform:translateY(-6px);border-color:var(--copper);}
+.card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg, transparent 35%, rgba(236,227,208,0.10) 50%, transparent 65%);
+  transform:translateX(-130%);transition:transform .7s var(--ease);
+  pointer-events:none;
+}
+.card:hover::after{transform:translateX(130%);}
+.card__icon{width:100%;height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+.card__icon svg{width:96px;height:96px;}
+.card h3{font-size:20px;font-weight:700;}
+.card__blurb{color:var(--ash);font-size:14.5px;margin-top:8px;min-height:42px;}
+.card__row{display:flex;align-items:center;justify-content:space-between;margin-top:22px;}
+.stamp-price{
+  font-family:var(--font-label);font-size:13px;font-weight:600;letter-spacing:0.06em;
+  border:1px solid var(--copper);border-radius:30px;padding:6px 14px;color:var(--parchment);
+}
+.card__add{
+  font-family:var(--font-label);font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--ember-bright);border-bottom:1px solid transparent;transition:border-color .25s;
+}
+.card__add:hover{border-color:var(--ember-bright);}
+
+@media(max-width:980px){.cards{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.cards{grid-template-columns:1fr;}}
+
+/* ---------------------------- seasoning interactive ---------------------------- */
+.season{background:var(--charcoal);}
+.season .wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.season__copy p{color:var(--ash);font-size:16px;margin-top:18px;max-width:460px;}
+.season__panel{
+  background:var(--iron-black);border:1px solid var(--line);border-radius:10px;
+  padding:40px;display:flex;flex-direction:column;align-items:center;
+}
+.season__pan-wrap{width:220px;height:220px;position:relative;}
+.season__pan-wrap svg{width:100%;height:100%;}
+#panFill{transition:fill 0.25s linear;}
+#panSheen{transition:opacity 0.25s linear;}
+.season__caption{
+  margin-top:24px;font-family:var(--font-label);font-size:13px;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--ember-bright);text-align:center;min-height:18px;
+}
+.season__slider{width:100%;max-width:320px;margin-top:22px;}
+.season__slider input[type=range]{
+  width:100%;-webkit-appearance:none;appearance:none;height:3px;background:var(--line);border-radius:2px;outline:none;
+}
+.season__slider input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--ember);
+  cursor:pointer;border:2px solid var(--iron-black);box-shadow:0 0 0 1px var(--copper);
+}
+.season__slider input[type=range]::-moz-range-thumb{
+  width:18px;height:18px;border-radius:50%;background:var(--ember);cursor:pointer;border:2px solid var(--iron-black);
+}
+.season__labels{display:flex;justify-content:space-between;width:100%;max-width:320px;margin-top:8px;
+  font-family:var(--font-label);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ash);}
+
+@media(max-width:880px){.season .wrap{grid-template-columns:1fr;}}
+
+/* ---------------------------- legacy / quotes ---------------------------- */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.plaque{
+  background:var(--charcoal);border:1px solid var(--line);border-radius:4px;
+  padding:32px 26px;position:relative;
+}
+.plaque:nth-child(1){transform:rotate(-1.2deg);}
+.plaque:nth-child(2){transform:rotate(0.6deg);}
+.plaque:nth-child(3){transform:rotate(-0.4deg);}
+.plaque__mark{width:30px;height:30px;margin-bottom:18px;opacity:0.8;}
+.plaque p{font-family:var(--font-display);font-size:17px;line-height:1.5;font-weight:400;font-style:italic;}
+.plaque__by{margin-top:18px;font-family:var(--font-label);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--copper);}
+
+@media(max-width:980px){.quotes{grid-template-columns:1fr;}.plaque{transform:none !important;}}
+
+/* ---------------------------- cta / newsletter ---------------------------- */
+.cta-section{
+  text-align:center;padding:130px 0;position:relative;
+  background:radial-gradient(circle at 50% 30%, rgba(217,100,43,0.10), transparent 60%);
+}
+.cta-mark{width:120px;height:120px;margin:0 auto 30px;}
+.cta-section h2{font-size:clamp(34px,5vw,52px);}
+.cta-section p{color:var(--ash);margin-top:16px;font-size:17px;max-width:480px;margin-inline:auto;}
+.cta-form{
+  margin-top:36px;display:flex;gap:10px;justify-content:center;max-width:460px;margin-inline:auto;flex-wrap:wrap;
+}
+.cta-form input{
+  flex:1;min-width:220px;background:var(--charcoal);border:1px solid var(--line);border-radius:3px;
+  padding:15px 18px;color:var(--parchment);font-family:var(--font-body);font-size:15px;
+}
+.cta-form input::placeholder{color:var(--ash);}
+.cta-form input:focus{outline:none;border-color:var(--copper);}
+.cta-note{margin-top:14px;font-size:13px;color:var(--ash);}
+
+/* ---------------------------- footer ---------------------------- */
+footer{border-top:1px solid var(--line);padding:70px 0 36px;}
+.footer__top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;}
+.footer__brand{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.footer__brand svg{width:34px;height:34px;}
+.footer__wordmark{font-family:var(--font-label);font-size:14px;font-weight:600;letter-spacing:0.16em;}
+.footer__tag{color:var(--ash);font-size:14px;max-width:260px;margin-top:8px;}
+.footer h4{font-family:var(--font-label);font-size:12.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ash);margin-bottom:16px;font-weight:600;}
+.footer__top a{display:block;color:var(--parchment);font-size:14.5px;margin-bottom:11px;transition:color .25s;}
+.footer__top a:hover{color:var(--ember-bright);}
+.footer__bottom{
+  margin-top:60px;padding-top:24px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;color:var(--ash);font-size:13px;flex-wrap:wrap;gap:10px;
+}
+
+@media(max-width:880px){
+  .footer__top{grid-template-columns:1fr 1fr;gap:32px;}
+  .footer__brand{margin-bottom:10px;}
+}
+
+/* ---------------------------- toast ---------------------------- */
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ember);color:var(--iron-black);font-family:var(--font-label);font-size:13px;font-weight:600;
+  letter-spacing:0.06em;padding:14px 26px;border-radius:4px;opacity:0;pointer-events:none;
+  transition:opacity .35s var(--ease), transform .35s var(--ease);z-index:200;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ---------------------------- focus ---------------------------- */
+a:focus-visible, button:focus-visible, input:focus-visible{
+  outline:2px solid var(--ember-bright);outline-offset:3px;
+}
+
+@media(max-width:980px){
+  .hero .wrap{grid-template-columns:1fr;}
+  .hero__visual{margin-top:40px;height:380px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <a href="#top" class="nav__brand">
+    <svg viewBox="0 0 200 200" aria-hidden="true">
+      <circle cx="100" cy="100" r="94" fill="none" stroke="var(--copper)" stroke-width="2"/>
+      <circle cx="100" cy="100" r="83" fill="none" stroke="var(--copper)" stroke-width="1" opacity="0.6"/>
+      <path id="navArcTop" d="M 33,100 A 67,67 0 0,1 167,100" fill="none"/>
+      <text font-family="Oswald" font-size="16" font-weight="600" letter-spacing="3" fill="var(--parchment)">
+        <textPath href="#navArcTop" startOffset="50%" text-anchor="middle">IRON LEGACY</textPath>
+      </text>
+      <g stroke="var(--parchment)" stroke-width="3" fill="none" stroke-linecap="round">
+        <ellipse cx="100" cy="108" rx="34" ry="22"/>
+        <line x1="130" y1="104" x2="158" y2="96"/>
+      </g>
+      <circle cx="100" cy="108" r="3.5" fill="var(--ember)"/>
+    </svg>
+  </a>
+  <ul class="nav__links">
+    <li><a href="#craft">The Craft</a></li>
+    <li><a href="#collection">Collection</a></li>
+    <li><a href="#season">Seasoning</a></li>
+    <li><a href="#legacy">Reviews</a></li>
+  </ul>
+  <div class="nav__right">
+    <a href="#collection" class="nav__cta">Shop Now</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero__copy">
+      <p class="eyebrow hero__line">Handforged in the USA</p>
+      <h1>
+        <span>Forged once.</span>
+        <span class="accent">Seasoned forever.</span>
+      </h1>
+      <p>Each pan is poured from raw iron, ground smooth by hand, and seasoned three times before it ever reaches your stove — so the only thing you break in is dinner.</p>
+      <div class="hero__actions">
+        <a href="#collection" class="btn btn--primary">Shop The Collection</a>
+        <a href="#craft" class="btn btn--ghost">See How It's Forged</a>
+      </div>
+      <div class="hero__trust">
+        <span>30-year warranty</span>
+        <span>Free seasoning kit</span>
+        <span>Ships from Tennessee</span>
+      </div>
+    </div>
+
+    <div class="hero__visual">
+      <div class="hero__rings">
+        <div class="ring ring--1"></div>
+        <div class="ring ring--2"></div>
+        <div class="ring ring--3"></div>
+      </div>
+      <div class="hero__pan">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="94" fill="var(--charcoal-2)" stroke="var(--copper)" stroke-width="2"/>
+          <circle cx="100" cy="100" r="83" fill="none" stroke="var(--copper)" stroke-width="1" opacity="0.5"/>
+          <path id="heroArcTop" d="M 30,100 A 70,70 0 0,1 170,100" fill="none"/>
+          <path id="heroArcBottom" d="M 168,103 A 65,65 0 0,1 32,103" fill="none"/>
+          <text font-family="Oswald" font-size="15" font-weight="600" letter-spacing="2.5" fill="var(--parchment)">
+            <textPath href="#heroArcTop" startOffset="50%" text-anchor="middle">IRON LEGACY</textPath>
+          </text>
+          <text font-family="Oswald" font-size="10" font-weight="500" letter-spacing="2.5" fill="var(--ash)">
+            <textPath href="#heroArcBottom" startOffset="50%" text-anchor="middle">HANDFORGED COOKWARE</textPath>
+          </text>
+          <g stroke="var(--parchment)" stroke-width="3" fill="none" stroke-linecap="round">
+            <ellipse cx="100" cy="112" rx="30" ry="18"/>
+            <line x1="126" y1="108" x2="150" y2="100"/>
+          </g>
+          <circle cx="100" cy="112" r="3.5" fill="var(--ember)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ THE CRAFT ============ -->
+<section class="section craft" id="craft">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Four steps, one lifetime</p>
+      <h2>Nothing about this is fast.</h2>
+      <p>Every Iron Legacy pan passes through the same four stages our foundry has used since the first pour. No shortcuts, no pre-fab molds, no skipping the season.</p>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="timeline__rail"></div>
+
+      <div class="tl-step reveal">
+        <span class="tl-step__dot"></span>
+        <span class="tl-step__num">01</span>
+        <h3>Smelt</h3>
+        <p>Raw iron ore is melted at 1,400°C until it runs like water.</p>
+      </div>
+      <div class="tl-step reveal">
+        <span class="tl-step__dot"></span>
+        <span class="tl-step__num">02</span>
+        <h3>Pour</h3>
+        <p>Molten iron is poured into sand molds, one pan at a time.</p>
+      </div>
+      <div class="tl-step reveal">
+        <span class="tl-step__dot"></span>
+        <span class="tl-step__num">03</span>
+        <h3>Temper</h3>
+        <p>Cooled slowly, then ground and polished smooth by hand.</p>
+      </div>
+      <div class="tl-step reveal">
+        <span class="tl-step__dot"></span>
+        <span class="tl-step__num">04</span>
+        <h3>Season</h3>
+        <p>Three coats of oil, baked in until the iron turns black and slick.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COLLECTION ============ -->
+<section class="section" id="collection">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">The collection</p>
+      <h2>Pick your workhorse.</h2>
+      <p>Four pieces. No clutter, no gimmicks — just the shapes a real kitchen actually reaches for.</p>
+    </div>
+
+    <div class="cards reveal-stagger reveal">
+      <div class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 100 100"><circle cx="46" cy="50" r="34" fill="none" stroke="var(--parchment)" stroke-width="3"/><line x1="76" y1="46" x2="96" y2="40" stroke="var(--parchment)" stroke-width="3" stroke-linecap="round"/><circle cx="46" cy="50" r="3" fill="var(--ember)"/></svg>
+        </div>
+        <h3>The Skillet, 10"</h3>
+        <p class="card__blurb">Mornings, weeknights, anything in a hurry.</p>
+        <div class="card__row">
+          <span class="stamp-price">$89</span>
+          <button class="card__add" onclick="showToast('Added 10&quot; Skillet to cart')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 100 100"><rect x="20" y="34" width="52" height="32" rx="6" fill="none" stroke="var(--parchment)" stroke-width="3"/><path d="M20 50 H8 M72 50 H84" stroke="var(--parchment)" stroke-width="3" stroke-linecap="round"/><circle cx="46" cy="50" r="3" fill="var(--ember)"/></svg>
+        </div>
+        <h3>The Dutch Oven, 6 Qt</h3>
+        <p class="card__blurb">Braises, stews, the slow Sunday stuff.</p>
+        <div class="card__row">
+          <span class="stamp-price">$159</span>
+          <button class="card__add" onclick="showToast('Added 6 Qt Dutch Oven to cart')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 100 100"><rect x="14" y="32" width="64" height="36" rx="4" fill="none" stroke="var(--parchment)" stroke-width="3"/><path d="M24 42h44M24 50h44M24 58h44" stroke="var(--parchment)" stroke-width="2" opacity="0.6"/></svg>
+        </div>
+        <h3>The Square Griddle</h3>
+        <p class="card__blurb">Sears steaks, doesn't steam them.</p>
+        <div class="card__row">
+          <span class="stamp-price">$95</span>
+          <button class="card__add" onclick="showToast('Added Square Griddle to cart')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card__icon">
+          <svg viewBox="0 0 100 100"><circle cx="46" cy="50" r="38" fill="none" stroke="var(--parchment)" stroke-width="3"/><line x1="80" y1="44" x2="98" y2="36" stroke="var(--parchment)" stroke-width="3" stroke-linecap="round"/><circle cx="46" cy="50" r="3" fill="var(--ember)"/></svg>
+        </div>
+        <h3>The Skillet, 12"</h3>
+        <p class="card__blurb">When the table's full.</p>
+        <div class="card__row">
+          <span class="stamp-price">$109</span>
+          <button class="card__add" onclick="showToast('Added 12&quot; Skillet to cart')">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEASONING ============ -->
+<section class="section season" id="season">
+  <div class="wrap">
+    <div class="season__copy reveal">
+      <p class="eyebrow">The ritual</p>
+      <h2>Seasoning isn't a chore.<br>It's the whole point.</h2>
+      <p>Oil, heat, and time bond into a slick black patina that gets better with every meal — never stripped with soap, never left to sit wet. Drag the slider to watch forty years happen in four seconds.</p>
+    </div>
+
+    <div class="season__panel reveal">
+      <div class="season__pan-wrap">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <circle id="panFill" cx="100" cy="100" r="78" fill="#6b6660"/>
+          <ellipse id="panSheen" cx="78" cy="78" rx="38" ry="22" fill="rgba(255,255,255,0.35)" opacity="0"/>
+          <circle cx="100" cy="100" r="78" fill="none" stroke="var(--copper)" stroke-width="2"/>
+          <line x1="170" y1="92" x2="196" y2="84" stroke="var(--parchment)" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="season__caption" id="seasonCaption">Straight from the foundry — needs oil.</p>
+      <div class="season__slider">
+        <input type="range" id="seasonSlider" min="0" max="100" value="0" aria-label="Seasoning level">
+      </div>
+      <div class="season__labels"><span>Bare iron</span><span>Fully seasoned</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LEGACY / QUOTES ============ -->
+<section class="section" id="legacy">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Passed down</p>
+      <h2>Cookware with a memory.</h2>
+    </div>
+
+    <div class="quotes reveal-stagger reveal">
+      <div class="plaque">
+        <svg class="plaque__mark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="var(--copper)" stroke-width="3"/><circle cx="50" cy="50" r="6" fill="var(--ember)"/></svg>
+        <p>"My grandmother seasoned this skillet in 1968. I'm still cooking eggs in it."</p>
+        <div class="plaque__by">Marisol T.</div>
+      </div>
+      <div class="plaque">
+        <svg class="plaque__mark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="var(--copper)" stroke-width="3"/><circle cx="50" cy="50" r="6" fill="var(--ember)"/></svg>
+        <p>"Dropped it, scrubbed it, forgot it on the stove twice. It owes me nothing."</p>
+        <div class="plaque__by">Dale R.</div>
+      </div>
+      <div class="plaque">
+        <svg class="plaque__mark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="var(--copper)" stroke-width="3"/><circle cx="50" cy="50" r="6" fill="var(--ember)"/></svg>
+        <p>"I bought this for myself. I'm buying the next one for my son."</p>
+        <div class="plaque__by">Priya K.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section reveal">
+  <div class="wrap">
+    <svg class="cta-mark" viewBox="0 0 200 200" aria-hidden="true">
+      <circle cx="100" cy="100" r="94" fill="none" stroke="var(--copper)" stroke-width="2"/>
+      <circle cx="100" cy="100" r="83" fill="none" stroke="var(--copper)" stroke-width="1" opacity="0.5"/>
+      <path id="ctaArc" d="M 33,100 A 67,67 0 0,1 167,100" fill="none"/>
+      <text font-family="Oswald" font-size="16" font-weight="600" letter-spacing="3" fill="var(--parchment)">
+        <textPath href="#ctaArc" startOffset="50%" text-anchor="middle">IRON LEGACY</textPath>
+      </text>
+      <g stroke="var(--parchment)" stroke-width="3" fill="none" stroke-linecap="round">
+        <ellipse cx="100" cy="108" rx="34" ry="22"/>
+        <line x1="130" y1="104" x2="158" y2="96"/>
+      </g>
+      <circle cx="100" cy="108" r="3.5" fill="var(--ember)"/>
+    </svg>
+    <h2>Start your legacy.</h2>
+    <p>Get foundry notes, seasoning tips, and first access to new pours — no spam, just iron.</p>
+    <form class="cta-form" onsubmit="event.preventDefault(); showToast('Welcome to the foundry list.'); this.reset();">
+      <input type="email" required placeholder="you@kitchen.com" aria-label="Email address">
+      <button type="submit" class="btn btn--primary">Join The Foundry</button>
+    </form>
+    <p class="cta-note">One email a month. Unsubscribe whenever — though nobody has yet.</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer__top">
+      <div>
+        <div class="footer__brand">
+          <svg viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="100" cy="100" r="94" fill="none" stroke="var(--copper)" stroke-width="2"/>
+            <g stroke="var(--parchment)" stroke-width="4" fill="none" stroke-linecap="round">
+              <ellipse cx="100" cy="108" rx="34" ry="22"/>
+              <line x1="130" y1="104" x2="158" y2="96"/>
+            </g>
+            <circle cx="100" cy="108" r="4" fill="var(--ember)"/>
+          </svg>
+          <span class="footer__wordmark">IRON LEGACY</span>
+        </div>
+        <p class="footer__tag">Cast in fire. Carried for generations.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="#collection">Skillets</a>
+        <a href="#collection">Dutch Ovens</a>
+        <a href="#collection">Griddles</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="#craft">The Foundry</a>
+        <a href="#legacy">Reviews</a>
+        <a href="#">Warranty</a>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <a href="#season">Care Guide</a>
+        <a href="#">Contact</a>
+        <a href="#">Returns</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Iron Legacy. All rights reserved.</span>
+      <span>Made to outlive the box it came in.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ---- scroll reveal ----
+const revealEls = document.querySelectorAll('.reveal, .timeline, .tl-step');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
+  });
+},{threshold:0.18});
+revealEls.forEach(el=>io.observe(el));
+
+// ---- mobile nav (kept minimal: links collapse via CSS; brand + CTA remain reachable) ----
+
+// ---- seasoning slider ----
+const slider = document.getElementById('seasonSlider');
+const panFill = document.getElementById('panFill');
+const panSheen = document.getElementById('panSheen');
+const caption = document.getElementById('seasonCaption');
+
+function lerpColor(a,b,t){
+  const ah=a.match(/\w\w/g).map(x=>parseInt(x,16));
+  const bh=b.match(/\w\w/g).map(x=>parseInt(x,16));
+  const rh=ah.map((c,i)=>Math.round(c+(bh[i]-c)*t));
+  return '#'+rh.map(c=>c.toString(16).padStart(2,'0')).join('');
+}
+
+function updateSeason(val){
+  const t = val/100;
+  panFill.setAttribute('fill', lerpColor('6b6660'.length===6?'#6b6660':'#6b6660','#15110d',t));
+  panSheen.setAttribute('opacity', (t*0.5).toFixed(2));
+  let text;
+  if(val < 25) text = "Straight from the foundry — needs oil.";
+  else if(val < 55) text = "First coat's in. Getting there.";
+  else if(val < 85) text = "Three coats deep — the black is setting.";
+  else text = "This is what forty years of bacon looks like.";
+  caption.textContent = text;
+}
+slider.addEventListener('input', e=>updateSeason(e.target.value));
+updateSeason(0);
+
+// ---- toast ----
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+</script>
+
+</body>
+</html>
